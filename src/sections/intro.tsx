@@ -10,9 +10,11 @@ export function IntroSection() {
             aria-hidden
             className="mx-auto block aspect-[4/5] w-[clamp(220px,24vw,340px)] overflow-hidden rounded-2xl bg-muted"
           >
-            <span className="flex h-full w-full items-center justify-center text-sm font-normal not-italic leading-normal tracking-normal text-muted-foreground">
-              이미지 추가 예정
-            </span>
+            <img
+              src="https://picsum.photos/seed/mj-portrait/600/750"
+              alt=""
+              className="h-full w-full object-cover"
+            />
           </span>
           <span className="text-center text-[clamp(1.5rem,4.5vw,3.75rem)] leading-[0.95] tracking-tight whitespace-nowrap md:text-left">
             다양한 창작
