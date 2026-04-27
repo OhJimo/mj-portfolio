@@ -213,6 +213,10 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
+        scroll-behavior: smooth;
+    }
+    section[id] {
+        scroll-margin-top: 6rem;
     }
     body {
         @apply bg-background text-foreground;

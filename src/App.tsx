@@ -1,20 +1,49 @@
-import { Button } from "@/components/ui/button"
-
 export function App() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
+    <>
+      {/* Header — floating pill nav */}
+      {/* TODO: Header */}
+
+      <main>
+        <section id="intro" className="section">
+          <div className="container-portfolio">
+            {/* TODO: Intro */}
+          </div>
+        </section>
+
+        <section id="experience" className="section">
+          <div className="container-portfolio">
+            {/* TODO: Narrative Experience (sticky stacked cards) */}
+          </div>
+        </section>
+
+        <section id="practice" className="section">
+          <div className="container-portfolio">
+            {/* TODO: Learning and Practice */}
+          </div>
+        </section>
+
+        <section id="archive" className="section">
+          <div className="container-portfolio">
+            {/* TODO: Evidence and Archive */}
+          </div>
+        </section>
+
+        <section id="direction" className="section">
+          <div className="container-portfolio">
+            {/* TODO: Problem and Direction */}
+          </div>
+        </section>
+
+        <section id="closing" className="section">
+          <div className="container-portfolio">
+            {/* TODO: Closing */}
+          </div>
+        </section>
+      </main>
+
+      {/* TODO: Footer */}
+    </>
   )
 }
 
