@@ -26,11 +26,11 @@ export function Header() {
     <header className="sticky top-4 z-50 flex justify-center px-4 pt-4">
       <nav
         aria-label="주요 메뉴"
-        className="shadow-subtle flex items-center rounded-full border border-border bg-background/80 py-2 pr-6 pl-2 backdrop-blur transition-[padding] duration-300"
+        className="shadow-subtle flex items-center rounded-full border border-[var(--olive-line)] bg-background/80 py-2 pr-6 pl-2 backdrop-blur transition-[padding] duration-300"
       >
         <a
           href="#intro"
-          className="flex items-center gap-2.5 transition-opacity duration-200 hover:opacity-70"
+          className="flex items-center gap-2.5 transition-colors duration-200 hover:text-[var(--olive-accent)]"
         >
           {/* TODO: 프로필 사진 */}
           <span aria-hidden className="size-9 shrink-0 rounded-full bg-muted" />
@@ -50,7 +50,7 @@ export function Header() {
             <li key={item.href}>
               <a
                 href={item.href}
-                className="whitespace-nowrap transition-opacity duration-200 hover:opacity-70"
+                className="whitespace-nowrap transition-colors duration-200 hover:text-[var(--olive-accent)]"
               >
                 {item.label}
               </a>
