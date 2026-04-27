@@ -1,13 +1,37 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/inter";
+@import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
+@import "@kfonts/maruburi/index.css";
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+    font-family: 'S-Core Dream';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-4Regular.woff') format('woff');
+}
+@font-face {
+    font-family: 'S-Core Dream';
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-5Medium.woff') format('woff');
+}
+@font-face {
+    font-family: 'S-Core Dream';
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-6Bold.woff') format('woff');
+}
+
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Inter Variable', sans-serif;
+    --font-sans: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-heading: 'S-Core Dream', 'Pretendard Variable', sans-serif;
+
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -46,6 +70,9 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+
+    --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.02);
+    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 :root {
@@ -81,6 +108,62 @@
     --sidebar-accent-foreground: oklch(0.228 0.013 107.4);
     --sidebar-border: oklch(0.93 0.007 106.5);
     --sidebar-ring: oklch(0.737 0.021 106.9);
+
+    --container-max: 1185px;
+    --container-px: 1.5rem;
+    --reading-max: 40rem;
+
+    --section-py: 4rem;
+
+    --type-display: 3.5rem;
+    --type-h1: 2.5rem;
+    --type-h2: 1.875rem;
+    --type-h3: 1.375rem;
+    --type-body: 1.0625rem;
+    --type-small: 0.875rem;
+
+    --leading-display: 1.2;
+    --leading-heading: 1.3;
+    --leading-subheading: 1.4;
+    --leading-body: 1.75;
+    --leading-small: 1.55;
+
+    --tracking-display: -0.01em;
+    --tracking-heading: -0.005em;
+    --tracking-body: 0;
+
+    --stack-xs: 0.5rem;
+    --stack-sm: 1rem;
+    --stack-md: 1.25rem;
+    --stack-lg: 1.5rem;
+    --stack-xl: 2rem;
+    --stack-2xl: 3rem;
+
+    --duration-fast: 150ms;
+    --duration-base: 250ms;
+    --duration-slow: 400ms;
+
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+    --focus-ring-width: 2px;
+    --focus-ring-offset: 2px;
+
+    --font-emphasis: '마루 부리', 'MaruBuri', serif;
+}
+
+@media (min-width: 768px) {
+    :root {
+        --container-px: 2rem;
+        --section-py: 6rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --container-px: 3rem;
+        --section-py: 8rem;
+    }
 }
 
 .dark {
@@ -118,13 +201,106 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+    :focus-visible {
+        outline: var(--focus-ring-width) solid var(--ring);
+        outline-offset: var(--focus-ring-offset);
     }
-  html {
-    @apply font-sans;
+    html {
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-size: var(--type-body);
+        line-height: var(--leading-body);
+        letter-spacing: var(--tracking-body);
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-heading);
+        font-weight: 500;
+        color: var(--foreground);
+    }
+    h1 {
+        font-size: var(--type-display);
+        line-height: var(--leading-display);
+        letter-spacing: var(--tracking-display);
+    }
+    h2 {
+        font-size: var(--type-h1);
+        line-height: var(--leading-heading);
+        letter-spacing: var(--tracking-heading);
+    }
+    h3 {
+        font-size: var(--type-h2);
+        line-height: var(--leading-heading);
+        letter-spacing: var(--tracking-heading);
+    }
+    h4 {
+        font-size: var(--type-h3);
+        line-height: var(--leading-subheading);
+        font-weight: 400;
+    }
+    p {
+        line-height: var(--leading-body);
+    }
+    small {
+        font-size: var(--type-small);
+        line-height: var(--leading-small);
+    }
+}
+
+@layer components {
+    .container-portfolio {
+        width: 100%;
+        max-width: var(--container-max);
+        margin-inline: auto;
+        padding-inline: var(--container-px);
+    }
+    .section {
+        padding-block: var(--section-py);
+    }
+    .reading {
+        max-width: var(--reading-max);
+    }
+
+    .hover-link {
+        text-decoration: underline transparent;
+        text-underline-offset: 0.2em;
+        transition:
+            opacity var(--duration-base) var(--ease-out-expo),
+            text-decoration-color var(--duration-base) var(--ease-out-expo);
+    }
+    .hover-link:hover {
+        opacity: 0.7;
+        text-decoration-color: currentColor;
+    }
+
+    .hover-card {
+        box-shadow: var(--shadow-subtle);
+        transition:
+            transform var(--duration-base) var(--ease-out-expo),
+            box-shadow var(--duration-base) var(--ease-out-expo);
+    }
+    .hover-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-soft);
+    }
+
+    .hover-image {
+        overflow: hidden;
+    }
+    .hover-image img {
+        transition:
+            transform var(--duration-slow) var(--ease-out-expo),
+            opacity var(--duration-slow) var(--ease-out-expo);
+    }
+    .hover-image:hover img {
+        transform: scale(1.02);
+        opacity: 0.9;
     }
 }
