@@ -5,10 +5,10 @@ export function IntroSection() {
         <div className="pt-12 md:pt-24 lg:pt-32">
           <h1>
             여러 현장과{" "}
-            <em className="font-emphasis">창작 경험</em>
+            <em className="font-emphasis not-italic">창작 경험</em>
             을 바탕으로,{" "}
             정해진{" "}
-            <em className="font-emphasis">카테고리</em>
+            <em className="font-emphasis not-italic">카테고리</em>
             로는 설명되지 않는 일의 방향을 만들어가고 있습니다.
           </h1>
           <div className="reading mt-12 space-y-6 md:mt-16">
