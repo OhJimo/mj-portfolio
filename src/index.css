@@ -109,8 +109,9 @@
     --sidebar-border: oklch(0.93 0.007 106.5);
     --sidebar-ring: oklch(0.737 0.021 106.9);
 
-    --container-max: 1185px;
+    --container-max: 1080px;
     --container-px: 1.5rem;
+    --guide-x: max(var(--container-px), calc((100vw - var(--container-max)) / 2));
     --reading-max: 40rem;
 
     --section-py: 4rem;
@@ -267,6 +268,28 @@
     }
     .section {
         padding-block: var(--section-py);
+    }
+    .section-divider {
+        position: relative;
+        border-top: 1.5px solid color-mix(in oklch, var(--border) 50%, transparent);
+    }
+    .section-divider::before,
+    .section-divider::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 9px;
+        height: 9px;
+        background: color-mix(in oklch, var(--foreground) 20%, var(--background));
+        z-index: 1;
+    }
+    .section-divider::before {
+        left: var(--guide-x);
+        transform: translate(-50%, -50%);
+    }
+    .section-divider::after {
+        right: var(--guide-x);
+        transform: translate(50%, -50%);
     }
     .reading {
         max-width: var(--reading-max);

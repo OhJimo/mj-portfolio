@@ -1,25 +1,23 @@
 export function IntroSection() {
   return (
-    <section id="intro" className="section">
+    <section id="intro" className="section pt-12 md:pt-16 lg:pt-20">
       <div className="container-portfolio">
-        <div className="pt-12 md:pt-24 lg:pt-32">
-          <h1>
-            여러 현장과{" "}
-            <em className="font-emphasis not-italic">창작 경험</em>
-            을 바탕으로,{" "}
-            정해진{" "}
-            <em className="font-emphasis not-italic">카테고리</em>
-            로는 설명되지 않는 일의 방향을 만들어가고 있습니다.
-          </h1>
-          <div className="reading mt-12 space-y-6 md:mt-16">
-            <p>
-              저는 전통 소목수를 시작으로, 신문 배달, 피아노 조율사, 골프장 캐디, 스키장 패트롤, 보험 설계사, 노점 양말 판매, 비즈니스 학습 코칭 매니저까지 서로 다른 현장을 거쳐왔습니다.
-            </p>
-            <p>
-              겉으로는 흩어진 경력처럼 보이지만, 제게는 모두 사람의 상황을 읽고 문제를 구조화하며, 실제로 움직일 수 있는 방식으로 문제를 풀어가는 감각을 익혀온 시간이었습니다.
-            </p>
-          </div>
-        </div>
+        <h1 className="grid grid-cols-1 items-center gap-6 md:grid-cols-[auto_auto_auto] md:justify-center md:gap-4">
+          <span className="text-center text-[clamp(1.5rem,4.5vw,3.75rem)] leading-[0.95] tracking-tight whitespace-nowrap md:text-right">
+            다양한 직군
+          </span>
+          <span
+            aria-hidden
+            className="mx-auto block aspect-[4/5] w-[clamp(220px,24vw,340px)] overflow-hidden rounded-2xl bg-muted"
+          >
+            <span className="flex h-full w-full items-center justify-center text-sm font-normal not-italic leading-normal tracking-normal text-muted-foreground">
+              이미지 추가 예정
+            </span>
+          </span>
+          <span className="text-center text-[clamp(1.5rem,4.5vw,3.75rem)] leading-[0.95] tracking-tight whitespace-nowrap md:text-left">
+            다양한 창작
+          </span>
+        </h1>
       </div>
     </section>
   )

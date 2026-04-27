@@ -1,39 +1,43 @@
+import { ReactLenis } from "lenis/react"
+
 import { Header } from "@/components/header"
+import { PageGuides } from "@/components/page-guides"
 import { IntroSection } from "@/sections/intro"
+import { AboutSection } from "@/sections/about"
+import { ExperienceSection } from "@/sections/experience"
 
 export function App() {
   return (
-    <>
+    <ReactLenis root>
+      <PageGuides />
       <Header />
 
-      <main>
+      <main className="relative">
         <IntroSection />
 
-        <section id="experience" className="section">
-          <div className="container-portfolio">
-            {/* TODO: Narrative Experience (sticky stacked cards) */}
-          </div>
-        </section>
+        <AboutSection />
 
-        <section id="practice" className="section">
+        <ExperienceSection />
+
+        <section id="practice" className="section section-divider">
           <div className="container-portfolio">
             {/* TODO: Learning and Practice */}
           </div>
         </section>
 
-        <section id="archive" className="section">
+        <section id="archive" className="section section-divider">
           <div className="container-portfolio">
             {/* TODO: Evidence and Archive */}
           </div>
         </section>
 
-        <section id="direction" className="section">
+        <section id="direction" className="section section-divider">
           <div className="container-portfolio">
             {/* TODO: Problem and Direction */}
           </div>
         </section>
 
-        <section id="closing" className="section">
+        <section id="closing" className="section section-divider">
           <div className="container-portfolio">
             {/* TODO: Closing */}
           </div>
@@ -41,7 +45,7 @@ export function App() {
       </main>
 
       {/* TODO: Footer */}
-    </>
+    </ReactLenis>
   )
 }
 
