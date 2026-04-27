@@ -5,6 +5,7 @@ import { PageGuides } from "@/components/page-guides"
 import { IntroSection } from "@/sections/intro"
 import { AboutSection } from "@/sections/about"
 import { ExperienceSection } from "@/sections/experience"
+import { PracticeSection } from "@/sections/practice"
 
 export function App() {
   return (
@@ -19,11 +20,7 @@ export function App() {
 
         <ExperienceSection />
 
-        <section id="practice" className="section section-divider">
-          <div className="container-portfolio">
-            {/* TODO: Learning and Practice */}
-          </div>
-        </section>
+        <PracticeSection />
 
         <section id="archive" className="section section-divider">
           <div className="container-portfolio">
