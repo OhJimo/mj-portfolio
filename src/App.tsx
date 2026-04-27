@@ -1,15 +1,13 @@
+import { Header } from "@/components/header"
+import { IntroSection } from "@/sections/intro"
+
 export function App() {
   return (
     <>
-      {/* Header — floating pill nav */}
-      {/* TODO: Header */}
+      <Header />
 
       <main>
-        <section id="intro" className="section">
-          <div className="container-portfolio">
-            {/* TODO: Intro */}
-          </div>
-        </section>
+        <IntroSection />
 
         <section id="experience" className="section">
           <div className="container-portfolio">

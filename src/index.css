@@ -272,6 +272,10 @@
         max-width: var(--reading-max);
     }
 
+    .font-emphasis {
+        font-family: var(--font-emphasis);
+    }
+
     .hover-link {
         text-decoration: underline transparent;
         text-underline-offset: 0.2em;
