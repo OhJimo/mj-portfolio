@@ -54,6 +54,7 @@ const CREATIVE_PROJECTS: Project[] = [
     meta: "2020 — 2025",
     description:
       "즉흥극 무대에서 사람과 상황을 빠르게 읽고 표현으로 잇는 감각을 익혔습니다.",
+    href: "https://youtu.be/LbtRAgU8n2A?si=ADFypqNl4NLHIS9g",
   },
 ]
 
@@ -136,8 +137,11 @@ function ProjectGroup({
 }
 
 function ProjectCard({ project }: { project: Project }) {
-  return (
-    <article className="hover-card overflow-hidden rounded-2xl border border-black/5 bg-card" style={{ cursor: "pointer" }}>
+  const cardClass =
+    "hover-card block overflow-hidden rounded-2xl border border-black/5 bg-card"
+
+  const inner = (
+    <>
       <div className="flex aspect-[4/3] items-center justify-center bg-muted">
         <span className="text-sm text-muted-foreground">이미지 추가 예정</span>
       </div>
@@ -154,17 +158,32 @@ function ProjectCard({ project }: { project: Project }) {
           {project.description}
         </p>
         {project.href && (
-          <a
-            href={project.href}
-            target="_blank"
-            rel="noreferrer"
-            className="hover-link inline-flex items-center gap-1 text-sm font-medium"
-          >
+          <span className="hover-link inline-flex items-center gap-1 text-sm font-medium">
             외부 링크
             <span aria-hidden>→</span>
-          </a>
+          </span>
         )}
       </div>
+    </>
+  )
+
+  if (project.href) {
+    return (
+      <a
+        href={project.href}
+        target="_blank"
+        rel="noreferrer"
+        className={cardClass}
+        style={{ cursor: "pointer" }}
+      >
+        {inner}
+      </a>
+    )
+  }
+
+  return (
+    <article className={cardClass} style={{ cursor: "pointer" }}>
+      {inner}
     </article>
   )
 }

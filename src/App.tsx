@@ -2,10 +2,12 @@ import { ReactLenis } from "lenis/react"
 
 import { Header } from "@/components/header"
 import { PageGuides } from "@/components/page-guides"
-import { IntroSection } from "@/sections/intro"
 import { AboutSection } from "@/sections/about"
 import { ArchiveSection } from "@/sections/archive"
+import { ClosingSection } from "@/sections/closing"
+import { DirectionSection } from "@/sections/direction"
 import { ExperienceSection } from "@/sections/experience"
+import { IntroSection } from "@/sections/intro"
 import { PracticeSection } from "@/sections/practice"
 
 export function App() {
@@ -25,17 +27,9 @@ export function App() {
 
         <ArchiveSection />
 
-        <section id="direction" className="section section-divider">
-          <div className="container-portfolio">
-            {/* TODO: Problem and Direction */}
-          </div>
-        </section>
+        <DirectionSection />
 
-        <section id="closing" className="section section-divider">
-          <div className="container-portfolio">
-            {/* TODO: Closing */}
-          </div>
-        </section>
+        <ClosingSection />
       </main>
 
       {/* TODO: Footer */}
