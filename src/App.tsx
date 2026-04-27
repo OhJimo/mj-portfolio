@@ -4,6 +4,7 @@ import { Header } from "@/components/header"
 import { PageGuides } from "@/components/page-guides"
 import { IntroSection } from "@/sections/intro"
 import { AboutSection } from "@/sections/about"
+import { ArchiveSection } from "@/sections/archive"
 import { ExperienceSection } from "@/sections/experience"
 import { PracticeSection } from "@/sections/practice"
 
@@ -22,11 +23,7 @@ export function App() {
 
         <PracticeSection />
 
-        <section id="archive" className="section section-divider">
-          <div className="container-portfolio">
-            {/* TODO: Evidence and Archive */}
-          </div>
-        </section>
+        <ArchiveSection />
 
         <section id="direction" className="section section-divider">
           <div className="container-portfolio">

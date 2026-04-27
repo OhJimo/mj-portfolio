@@ -30,7 +30,7 @@ export function Header() {
       >
         <a
           href="#intro"
-          className="flex items-center gap-2.5 transition-colors duration-200 hover:text-[var(--olive-accent)]"
+          className="cursor-interactive flex items-center gap-2.5 transition-colors duration-200 hover:text-[var(--olive-accent)]"
         >
           {/* TODO: 프로필 사진 */}
           <span aria-hidden className="size-9 shrink-0 rounded-full bg-muted" />
@@ -50,7 +50,7 @@ export function Header() {
             <li key={item.href}>
               <a
                 href={item.href}
-                className="whitespace-nowrap transition-colors duration-200 hover:text-[var(--olive-accent)]"
+                className="cursor-interactive whitespace-nowrap transition-colors duration-200 hover:text-[var(--olive-accent)]"
               >
                 {item.label}
               </a>

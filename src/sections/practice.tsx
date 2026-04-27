@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const PRACTICE_IMAGES = [
   {
@@ -12,39 +12,106 @@ const PRACTICE_IMAGES = [
   },
 ] as const
 
+const TRACK_IMAGES = [
+  PRACTICE_IMAGES[PRACTICE_IMAGES.length - 1],
+  ...PRACTICE_IMAGES,
+  PRACTICE_IMAGES[0],
+] as const
+
+const TRACK_STEP = 100 / TRACK_IMAGES.length
+
 export function PracticeSection() {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [previousIndex, setPreviousIndex] = useState<number | null>(null)
-  const [direction, setDirection] = useState<"prev" | "next">("next")
-  const [animationKey, setAnimationKey] = useState(0)
+  const [displayIndex, setDisplayIndex] = useState(1)
+  const [transitionEnabled, setTransitionEnabled] = useState(true)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const pendingStepRef = useRef<-1 | 0 | 1>(0)
 
-  const startTransition = (nextIndex: number, nextDirection: "prev" | "next") => {
-    if (nextIndex === activeIndex) return
+  useEffect(() => {
+    PRACTICE_IMAGES.forEach((image) => {
+      const preloadImage = new window.Image()
+      preloadImage.src = image.src
+    })
+  }, [])
 
-    setPreviousIndex(activeIndex)
-    setDirection(nextDirection)
-    setActiveIndex(nextIndex)
-    setAnimationKey((prev) => prev + 1)
+  const flushPending = () => {
+    const pendingStep = pendingStepRef.current
+    if (pendingStep === 0) return
+
+    pendingStepRef.current = 0
+
+    if (pendingStep === 1) {
+      moveBy(1)
+      return
+    }
+
+    moveBy(-1)
+  }
+
+  const unlockAfterLoopJump = () => {
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        setTransitionEnabled(true)
+        setIsAnimating(false)
+        flushPending()
+      })
+    })
+  }
+
+  const moveBy = (step: 1 | -1) => {
+    setIsAnimating(true)
+    setTransitionEnabled(true)
+    setDisplayIndex((prev) => prev + step)
+    setActiveIndex((prev) =>
+      (prev + step + PRACTICE_IMAGES.length) % PRACTICE_IMAGES.length,
+    )
   }
 
   const handlePrev = () => {
-    startTransition(
-      activeIndex === 0 ? PRACTICE_IMAGES.length - 1 : activeIndex - 1,
-      "prev",
-    )
+    if (isAnimating) {
+      pendingStepRef.current = -1
+      return
+    }
+
+    moveBy(-1)
   }
 
   const handleNext = () => {
-    startTransition(
-      activeIndex === PRACTICE_IMAGES.length - 1 ? 0 : activeIndex + 1,
-      "next",
-    )
+    if (isAnimating) {
+      pendingStepRef.current = 1
+      return
+    }
+
+    moveBy(1)
   }
 
   const handleDotClick = (index: number) => {
     if (index === activeIndex) return
+    if (isAnimating) return
 
-    startTransition(index, index > activeIndex ? "next" : "prev")
+    setIsAnimating(true)
+    setTransitionEnabled(true)
+    setActiveIndex(index)
+    setDisplayIndex(index + 1)
+  }
+
+  const handleTransitionEnd = () => {
+    if (displayIndex === 0) {
+      setTransitionEnabled(false)
+      setDisplayIndex(PRACTICE_IMAGES.length)
+      unlockAfterLoopJump()
+      return
+    }
+
+    if (displayIndex === PRACTICE_IMAGES.length + 1) {
+      setTransitionEnabled(false)
+      setDisplayIndex(1)
+      unlockAfterLoopJump()
+      return
+    }
+
+    setIsAnimating(false)
+    flushPending()
   }
 
   return (
@@ -59,27 +126,33 @@ export function PracticeSection() {
             <div className="order-2 md:order-1">
               <div className="overflow-hidden rounded-[2rem] border border-black/6">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[1.95rem] bg-muted">
-                  <img
-                    src={PRACTICE_IMAGES[previousIndex ?? activeIndex].src}
-                    alt=""
-                    className="absolute inset-0 h-full w-full object-cover"
-                    draggable={false}
-                  />
-
-                  {previousIndex !== null ? (
-                    <img
-                      key={`${activeIndex}-${animationKey}`}
-                      src={PRACTICE_IMAGES[activeIndex].src}
-                      alt=""
-                      className={`absolute inset-0 h-full w-full object-cover ${
-                        direction === "next"
-                          ? "practice-slide-in-right"
-                          : "practice-slide-in-left"
-                      }`}
-                      onAnimationEnd={() => setPreviousIndex(null)}
-                      draggable={false}
-                    />
-                  ) : null}
+                  <div
+                    className="flex h-full will-change-transform"
+                    onTransitionEnd={handleTransitionEnd}
+                    style={{
+                      width: `${TRACK_IMAGES.length * 100}%`,
+                      transform: `translate3d(-${displayIndex * TRACK_STEP}%, 0, 0)`,
+                      transition: transitionEnabled
+                        ? "transform 360ms cubic-bezier(0.22, 1, 0.36, 1)"
+                        : "none",
+                    }}
+                  >
+                    {TRACK_IMAGES.map((image, index) => (
+                      <div
+                        key={`${image.src}-${index}`}
+                        className="h-full shrink-0"
+                        style={{ width: `${TRACK_STEP}%` }}
+                      >
+                        <img
+                          src={image.src}
+                          alt=""
+                          className="h-full w-full object-cover"
+                          loading="eager"
+                          draggable={false}
+                        />
+                      </div>
+                    ))}
+                  </div>
 
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/22 via-black/6 to-transparent" />
 
@@ -87,7 +160,7 @@ export function PracticeSection() {
                     type="button"
                     onClick={handlePrev}
                     aria-label="이전 이미지"
-                    className="absolute left-4 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95"
+                    className="absolute left-4 top-1/2 flex size-10 -translate-y-1/2 cursor-pointer appearance-none items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95" style={{ cursor: "pointer" }}
                   >
                     ←
                   </button>
@@ -95,7 +168,7 @@ export function PracticeSection() {
                     type="button"
                     onClick={handleNext}
                     aria-label="다음 이미지"
-                    className="absolute right-4 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95"
+                    className="absolute right-4 top-1/2 flex size-10 -translate-y-1/2 cursor-pointer appearance-none items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95" style={{ cursor: "pointer" }}
                   >
                     →
                   </button>
@@ -108,10 +181,10 @@ export function PracticeSection() {
                         onClick={() => handleDotClick(index)}
                         aria-label={`${index + 1}번 이미지 보기`}
                         aria-pressed={activeIndex === index}
-                        className="flex items-center justify-center"
+                        className="flex cursor-pointer appearance-none items-center justify-center" style={{ cursor: "pointer" }}
                       >
                         <span
-                          className={`block rounded-full transition-all duration-250 ${
+                          className={`block rounded-full transition-all duration-200 ${
                             activeIndex === index
                               ? "h-2.5 w-7 bg-white"
                               : "size-2.5 bg-white/55"
