@@ -15,7 +15,7 @@
   - 헤딩 — S-Core Dream (jsdelivr CDN)
   - 강조 — Maruburi (npm `@kfonts/maruburi`)
 - **아이콘**: Phosphor Icons
-- **배포**: GitHub Pages (https://OhJimo.github.io/mj-portfolio/)
+- **배포**: Vercel
 
 ## 구조
 
@@ -42,8 +42,6 @@ npm run build    # dist/ 생성
 npm run lint
 ```
 
-## 배포 (GitHub Pages)
+## 배포
 
-`vite.config.ts`의 `base: "/mj-portfolio/"` 설정으로 자산 경로 처리됨.
-
-배포 흐름은 추후 GitHub Actions 워크플로우로 자동화 예정.
+Vercel에 연동되어 `main` 푸시 시 자동 배포됨.

@@ -29,9 +29,12 @@ const TIMELINE = [
   },
 ] as const
 
-import bookWritingBusiness from "@/assets/projects/book-writing-business.jpg"
-import exhibitionNa2024 from "@/assets/projects/exhibition-na-2024.png"
-import improvShow from "@/assets/projects/improv-show.jpg"
+import bookWritingBusiness from "@/assets/projects/book-writing-business.webp"
+import exhibitionNa2024 from "@/assets/projects/exhibition-na-2024.webp"
+import improvShow from "@/assets/projects/improv-show.webp"
+import gameRank from "@/assets/projects/game-rank.webp"
+import landingLin from "@/assets/projects/landinglin.webp"
+import fbAdHelper from "@/assets/projects/fb-ad-helper.webp"
 
 type Project = {
   title: string
@@ -40,6 +43,7 @@ type Project = {
   href?: string
   image?: string
   imageObjectPosition?: string
+  imageVariant?: "cover" | "logo"
 }
 
 const CREATIVE_PROJECTS: Project[] = [
@@ -76,16 +80,25 @@ const WEB_PROJECTS: Project[] = [
     title: "GAME RANK",
     description:
       "여러 게임 순위를 한곳에서 모아볼 수 있도록 만든 웹 프로젝트.",
+    href: "https://oz-gamerank.vercel.app/",
+    image: gameRank,
+    imageVariant: "logo",
   },
   {
     title: "LandingLin",
     description:
       "노션 페이지를 분석 가능한 랜딩 페이지로 전환하는 서비스.",
+    href: "https://landinglin.com/",
+    image: landingLin,
+    imageVariant: "logo",
   },
   {
     title: "FB 광고 라이브러리 도우미",
     description:
       "크롬 웹스토어에 배포한 확장 프로그램.",
+    href: "https://chromewebstore.google.com/detail/fb-%EA%B4%91%EA%B3%A0-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EB%8F%84%EC%9A%B0%EB%AF%B8/gjfjmdnbcambfkhldbjeojdahnfehkdl",
+    image: fbAdHelper,
+    imageVariant: "logo",
   },
 ]
 
@@ -93,7 +106,7 @@ export function ArchiveSection() {
   return (
     <section id="archive" className="section section-divider">
       <div className="container-portfolio">
-        <h2 className="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-none tracking-tight">
+        <h2 className="section-title">
           쌓아온 기록
         </h2>
 
@@ -155,20 +168,34 @@ function ProjectCard({ project }: { project: Project }) {
 
   const inner = (
     <>
-      <div className="flex aspect-[4/3] items-center justify-center overflow-hidden bg-muted">
+      <div
+        className={`flex aspect-[4/3] items-center justify-center overflow-hidden ${
+          project.imageVariant === "logo" ? "bg-white" : "bg-muted"
+        }`}
+      >
         {project.image ? (
-          <img
-            src={project.image}
-            alt=""
-            className="h-full w-full object-cover"
-            style={
-              project.imageObjectPosition
-                ? { objectPosition: project.imageObjectPosition }
-                : undefined
-            }
-            loading="lazy"
-            draggable={false}
-          />
+          project.imageVariant === "logo" ? (
+            <img
+              src={project.image}
+              alt=""
+              className="max-h-[78%] max-w-[78%] object-contain"
+              loading="lazy"
+              draggable={false}
+            />
+          ) : (
+            <img
+              src={project.image}
+              alt=""
+              className="h-full w-full object-cover"
+              style={
+                project.imageObjectPosition
+                  ? { objectPosition: project.imageObjectPosition }
+                  : undefined
+              }
+              loading="lazy"
+              draggable={false}
+            />
+          )
         ) : (
           <span className="text-sm text-muted-foreground">이미지 추가 예정</span>
         )}
@@ -186,7 +213,7 @@ function ProjectCard({ project }: { project: Project }) {
           {project.description}
         </p>
         {project.href && (
-          <span className="hover-link inline-flex items-center gap-1 text-sm font-medium">
+          <span className="inline-flex items-center gap-1 text-sm font-medium">
             외부 링크
             <span aria-hidden>→</span>
           </span>
@@ -202,7 +229,6 @@ function ProjectCard({ project }: { project: Project }) {
         target="_blank"
         rel="noreferrer"
         className={cardClass}
-        style={{ cursor: "pointer" }}
       >
         {inner}
       </a>
@@ -210,7 +236,7 @@ function ProjectCard({ project }: { project: Project }) {
   }
 
   return (
-    <article className={cardClass} style={{ cursor: "pointer" }}>
+    <article className={cardClass}>
       {inner}
     </article>
   )

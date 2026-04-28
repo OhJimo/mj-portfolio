@@ -1,17 +1,9 @@
 import { useState } from "react"
 import { useLenis } from "lenis/react"
 
+import profileAvatar from "@/assets/profile/profile-1.webp"
+import { NAV_ITEMS } from "@/lib/navigation"
 import { cn } from "@/lib/utils"
-
-const NAV_ITEMS = [
-  { label: "시작", href: "#intro" },
-  { label: "소개", href: "#about" },
-  { label: "경험", href: "#experience" },
-  { label: "기반", href: "#practice" },
-  { label: "기록", href: "#archive" },
-  { label: "방향", href: "#direction" },
-  { label: "연락", href: "#closing" },
-] as const
 
 export function Header() {
   const [hideNav, setHideNav] = useState(false)
@@ -30,12 +22,16 @@ export function Header() {
       >
         <a
           href="#intro"
-          className="cursor-interactive flex items-center gap-2.5 transition-colors duration-200 hover:text-[var(--olive-accent)]"
+          className="flex items-center gap-2.5 transition-colors duration-200 hover:text-[var(--olive-accent)]"
         >
-          {/* TODO: 프로필 사진 */}
-          <span aria-hidden className="size-9 shrink-0 rounded-full bg-muted" />
-          {/* TODO: 본인 이름 */}
-          <span className="text-base font-medium">이름</span>
+          <span className="size-9 shrink-0 overflow-hidden rounded-full">
+            <img
+              src={profileAvatar}
+              alt=""
+              className="h-full w-full origin-top scale-150 object-cover object-top"
+            />
+          </span>
+          <span className="text-base font-medium">메리제인</span>
         </a>
         <ul
           className={cn(
@@ -50,7 +46,7 @@ export function Header() {
             <li key={item.href}>
               <a
                 href={item.href}
-                className="cursor-interactive whitespace-nowrap transition-colors duration-200 hover:text-[var(--olive-accent)]"
+                className="whitespace-nowrap transition-colors duration-200 hover:text-[var(--olive-accent)]"
               >
                 {item.label}
               </a>

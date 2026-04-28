@@ -1,14 +1,20 @@
 import { useEffect, useRef, useState } from "react"
 
+import lectureImage from "@/assets/practice/lecture.webp"
+import soongsilCyberUniv from "@/assets/practice/soongsil-cyber-univ.webp"
+import workspaceImage from "@/assets/practice/workspace.webp"
+
 const PRACTICE_IMAGES = [
   {
-    src: "https://picsum.photos/seed/mj-practice-1/900/1125",
+    src: soongsilCyberUniv,
   },
   {
-    src: "https://picsum.photos/seed/mj-practice-2/900/1125",
+    src: workspaceImage,
+    objectPosition: "44% 28%",
+    scale: 1.08,
   },
   {
-    src: "https://picsum.photos/seed/mj-practice-3/900/1125",
+    src: lectureImage,
   },
 ] as const
 
@@ -20,11 +26,14 @@ const TRACK_IMAGES = [
 
 const TRACK_STEP = 100 / TRACK_IMAGES.length
 
+const AUTOPLAY_INTERVAL_MS = 5000
+
 export function PracticeSection() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [displayIndex, setDisplayIndex] = useState(1)
   const [transitionEnabled, setTransitionEnabled] = useState(true)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
   const pendingStepRef = useRef<-1 | 0 | 1>(0)
 
   useEffect(() => {
@@ -33,6 +42,21 @@ export function PracticeSection() {
       preloadImage.src = image.src
     })
   }, [])
+
+  useEffect(() => {
+    if (isPaused) return
+
+    const intervalId = window.setInterval(() => {
+      setIsAnimating(true)
+      setTransitionEnabled(true)
+      setDisplayIndex((prev) => prev + 1)
+      setActiveIndex((prev) => (prev + 1) % PRACTICE_IMAGES.length)
+    }, AUTOPLAY_INTERVAL_MS)
+
+    return () => {
+      window.clearInterval(intervalId)
+    }
+  }, [isPaused])
 
   const flushPending = () => {
     const pendingStep = pendingStepRef.current
@@ -118,13 +142,23 @@ export function PracticeSection() {
     <section id="practice" className="section section-divider">
       <div className="container-portfolio">
         <div className="space-y-12 md:space-y-16">
-          <h2 className="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-none tracking-tight">
+          <h2 className="section-title">
             지금 쌓고 있는 기반
           </h2>
 
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(280px,0.78fr)_minmax(0,1fr)] md:items-start md:gap-12 lg:gap-16">
             <div className="order-2 md:order-1">
-              <div className="overflow-hidden rounded-[2rem] border border-black/6">
+              <div
+                className="overflow-hidden rounded-[2rem] border border-black/6"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+                onFocusCapture={() => setIsPaused(true)}
+                onBlurCapture={(e) => {
+                  if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                    setIsPaused(false)
+                  }
+                }}
+              >
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[1.95rem] bg-muted">
                   <div
                     className="flex h-full will-change-transform"
@@ -140,13 +174,25 @@ export function PracticeSection() {
                     {TRACK_IMAGES.map((image, index) => (
                       <div
                         key={`${image.src}-${index}`}
-                        className="h-full shrink-0"
+                        className="h-full shrink-0 overflow-hidden"
                         style={{ width: `${TRACK_STEP}%` }}
                       >
                         <img
                           src={image.src}
                           alt=""
                           className="h-full w-full object-cover"
+                          style={
+                            "objectPosition" in image || "scale" in image
+                              ? {
+                                  objectPosition:
+                                    "objectPosition" in image ? image.objectPosition : undefined,
+                                  transform:
+                                    "scale" in image ? `scale(${image.scale})` : undefined,
+                                  transformOrigin:
+                                    "scale" in image ? "top left" : undefined,
+                                }
+                              : undefined
+                          }
                           loading="eager"
                           draggable={false}
                         />
@@ -160,7 +206,7 @@ export function PracticeSection() {
                     type="button"
                     onClick={handlePrev}
                     aria-label="이전 이미지"
-                    className="absolute left-4 top-1/2 flex size-10 -translate-y-1/2 cursor-pointer appearance-none items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95" style={{ cursor: "pointer" }}
+                    className="absolute left-4 top-1/2 flex size-10 -translate-y-1/2 cursor-pointer appearance-none items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95"
                   >
                     ←
                   </button>
@@ -168,7 +214,7 @@ export function PracticeSection() {
                     type="button"
                     onClick={handleNext}
                     aria-label="다음 이미지"
-                    className="absolute right-4 top-1/2 flex size-10 -translate-y-1/2 cursor-pointer appearance-none items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95" style={{ cursor: "pointer" }}
+                    className="absolute right-4 top-1/2 flex size-10 -translate-y-1/2 cursor-pointer appearance-none items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95"
                   >
                     →
                   </button>
@@ -181,7 +227,7 @@ export function PracticeSection() {
                         onClick={() => handleDotClick(index)}
                         aria-label={`${index + 1}번 이미지 보기`}
                         aria-pressed={activeIndex === index}
-                        className="flex cursor-pointer appearance-none items-center justify-center" style={{ cursor: "pointer" }}
+                        className="flex cursor-pointer appearance-none items-center justify-center"
                       >
                         <span
                           className={`block rounded-full transition-all duration-200 ${

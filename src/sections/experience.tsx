@@ -56,7 +56,7 @@ export function ExperienceSection() {
   return (
     <section id="experience" className="section section-divider">
       <div className="container-portfolio">
-        <h2 className="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-none tracking-tight">
+        <h2 className="section-title">
           나를 만든 경험
         </h2>
 

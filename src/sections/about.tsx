@@ -1,13 +1,11 @@
-import { ABOUT_LANDING_ROTATE_Y, ABOUT_LANDING_ROTATE_Z, MORPH_PERSPECTIVE, useAboutPortraitAnchor } from "@/components/portrait-morph"
+import profileAbout from "@/assets/profile/profile-2.webp"
 
 export function AboutSection() {
-  const { anchorRef } = useAboutPortraitAnchor()
-
   return (
     <section id="about" className="section section-divider">
       <div className="container-portfolio">
         <div className="space-y-12 md:space-y-16">
-          <p className="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-none tracking-tight">소개</p>
+          <h2 className="section-title">소개</h2>
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-12 lg:gap-16">
             <div className="space-y-6 md:space-y-8">
               <h2 className="text-[clamp(1.5rem,2.5vw,2rem)] font-bold leading-[1.35]">
@@ -23,15 +21,14 @@ export function AboutSection() {
               </div>
             </div>
             <div
-              ref={anchorRef}
               className="mx-auto block aspect-[4/5] w-[clamp(220px,24vw,340px)] overflow-hidden rounded-[2rem] bg-muted md:-mt-6 md:mx-0 lg:-mt-10"
               style={{
-                transform: `perspective(${MORPH_PERSPECTIVE}px) rotate(${ABOUT_LANDING_ROTATE_Z}deg) rotateY(${ABOUT_LANDING_ROTATE_Y}deg)`,
+                transform: "perspective(900px) rotate(2deg) rotateY(-18deg)",
                 transformOrigin: "center center",
               }}
             >
               <img
-                src="https://picsum.photos/seed/mj-about/600/750"
+                src={profileAbout}
                 alt=""
                 className="h-full w-full object-cover"
               />

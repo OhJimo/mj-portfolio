@@ -1,79 +1,51 @@
-import { useEffect, useState } from "react"
+import profileIntro from "@/assets/profile/profile-3.webp"
 
-import { useIntroPortraitAnchor } from "@/components/portrait-morph"
-
-function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(false)
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)")
-    setIsDesktop(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
-    mq.addEventListener("change", handler)
-    return () => mq.removeEventListener("change", handler)
-  }, [])
-  return isDesktop
-}
+const CARD_WIDTH = "clamp(220px,24vw,340px)"
+const CARD_HEIGHT = "clamp(275px,30vw,425px)"
 
 export function IntroSection() {
-  const { anchorRef, hideStaticImage } = useIntroPortraitAnchor()
-  const isDesktop = useIsDesktop()
-
-  const colStyle: React.CSSProperties = isDesktop ? { position: "relative" } : {}
-  const subLeftStyle: React.CSSProperties = isDesktop
-    ? { position: "absolute", right: 0, bottom: "100%", marginBottom: 12, whiteSpace: "nowrap" }
-    : {}
-  const subRightStyle: React.CSSProperties = isDesktop
-    ? { position: "absolute", left: 0, top: "100%", marginTop: 12, whiteSpace: "nowrap" }
-    : {}
-
   return (
     <section
       id="intro"
       className="section flex min-h-[85vh] items-center pt-20 pb-16 md:min-h-[88vh] md:pt-24 md:pb-20 lg:min-h-[90vh]"
     >
       <div className="container-portfolio w-full">
-        <h1 className="grid grid-cols-1 items-center gap-8 md:grid-cols-[1fr_auto_1fr] md:gap-6 lg:gap-10">
+        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:gap-6 lg:gap-10">
+          <div className="relative text-center md:pr-3 md:text-right lg:pr-6" style={{ minHeight: CARD_HEIGHT }}>
+            <div className="flex flex-col gap-3.5 md:absolute md:top-1/2 md:right-0 md:-translate-y-1/2 md:items-end">
+              <span className="text-[clamp(0.95rem,1.1vw,1.25rem)] font-medium leading-[1.2] tracking-[-0.02em] text-muted-foreground md:max-w-[22ch] md:text-right md:whitespace-nowrap">
+                전통 소목수부터 학습 매니저까지
+              </span>
+              <span className="text-[clamp(1.5rem,4.5vw,3.75rem)] font-bold leading-[1.08] tracking-tight whitespace-nowrap">
+                다양한 직군
+              </span>
+            </div>
+          </div>
+
           <span
-            className="block space-y-4 text-center md:space-y-0 md:text-right"
-            style={colStyle}
-          >
-            <span
-              className="block text-xs font-medium tracking-wide text-muted-foreground md:text-sm lg:text-base"
-              style={subLeftStyle}
-            >
-              전통 소목수에서 학습 매니저까지
-            </span>
-            <span className="block text-[clamp(1.5rem,4.5vw,3.75rem)] font-bold leading-[1.15] tracking-tight whitespace-nowrap">
-              다양한 직군
-            </span>
-          </span>
-          <span
-            ref={anchorRef}
             aria-hidden
-            className="mx-auto block aspect-[4/5] w-[clamp(220px,24vw,340px)] overflow-hidden rounded-2xl bg-muted transition-opacity duration-200"
-            style={{ opacity: hideStaticImage ? 0 : 1 }}
+            className="mx-auto block aspect-[4/5] overflow-hidden rounded-2xl bg-muted"
+            style={{ width: CARD_WIDTH }}
           >
             <img
-              src="https://picsum.photos/seed/mj-portrait/600/750"
+              src={profileIntro}
               alt=""
               className="h-full w-full object-cover"
+              style={{ objectPosition: "center 8%" }}
             />
           </span>
-          <span
-            className="block space-y-2 text-center md:space-y-0 md:text-left"
-            style={colStyle}
-          >
-            <span className="block text-[clamp(1.5rem,4.5vw,3.75rem)] font-bold leading-[1.15] tracking-tight whitespace-nowrap">
-              다양한 창작
-            </span>
-            <span
-              className="block text-xs font-medium tracking-wide text-muted-foreground md:text-sm lg:text-base"
-              style={subRightStyle}
-            >
-              책에서 전시, 무대까지
-            </span>
-          </span>
-        </h1>
+
+          <div className="relative text-center md:pl-3 md:text-left lg:pl-6" style={{ minHeight: CARD_HEIGHT }}>
+            <div className="flex flex-col gap-3.5 md:absolute md:top-1/2 md:left-0 md:-translate-y-1/2 md:items-start">
+              <span className="text-[clamp(1.5rem,4.5vw,3.75rem)] font-bold leading-[1.08] tracking-tight whitespace-nowrap">
+                다양한 창작
+              </span>
+              <span className="text-[clamp(0.95rem,1.1vw,1.25rem)] font-medium leading-[1.2] tracking-[-0.02em] text-muted-foreground md:max-w-[16ch] md:text-left">
+                책에서 전시, 무대까지
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )

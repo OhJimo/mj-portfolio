@@ -1,14 +1,5 @@
-const NAV_ITEMS = [
-  { label: "시작", href: "#intro" },
-  { label: "소개", href: "#about" },
-  { label: "경험", href: "#experience" },
-  { label: "기반", href: "#practice" },
-  { label: "기록", href: "#archive" },
-  { label: "방향", href: "#direction" },
-  { label: "연락", href: "#closing" },
-] as const
-
-const EMAIL = "benayou878@gmail.com"
+import { EMAIL } from "@/lib/contact"
+import { NAV_ITEMS } from "@/lib/navigation"
 
 export function Footer() {
   return (
@@ -33,7 +24,7 @@ export function Footer() {
             </p>
             <a
               href={`mailto:${EMAIL}`}
-              className="cursor-interactive inline-flex text-base font-medium transition-colors duration-200 hover:text-white/70 md:text-lg"
+              className="inline-flex text-base font-medium transition-colors duration-200 hover:text-white/70 md:text-lg"
             >
               {EMAIL}
             </a>
@@ -48,7 +39,7 @@ export function Footer() {
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    className="cursor-interactive transition-colors duration-200 hover:text-white/70"
+                    className="transition-colors duration-200 hover:text-white/70"
                   >
                     {item.label}
                   </a>

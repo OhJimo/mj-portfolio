@@ -1,3 +1,5 @@
+import { EMAIL } from "@/lib/contact"
+
 export function ClosingSection() {
   return (
     <section id="closing" className="section section-divider">
@@ -31,13 +33,13 @@ export function ClosingSection() {
 
               <div className="border-t border-[var(--olive-line-soft)] pt-5">
                 <a
-                  href="mailto:benayou878@gmail.com"
-                  className="cursor-interactive inline-flex items-center gap-2 text-base font-medium transition-colors duration-200 hover:text-[var(--olive-accent)]"
+                  href={`mailto:${EMAIL}`}
+                  className="inline-flex items-center gap-2 text-base font-medium transition-colors duration-200 hover:text-[var(--olive-accent)]"
                 >
                   <span className="text-sm uppercase tracking-[0.18em] text-muted-foreground">
                     Email
                   </span>
-                  <span>benayou878@gmail.com</span>
+                  <span>{EMAIL}</span>
                 </a>
               </div>
             </div>

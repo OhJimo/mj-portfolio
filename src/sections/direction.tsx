@@ -19,7 +19,7 @@ export function DirectionSection() {
       <div className="container-portfolio">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-start md:gap-12 lg:gap-20">
           <div className="md:sticky md:top-28 md:pt-6 md:pl-1 lg:pt-7">
-            <h2 className="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-[1.05] tracking-tight">
+            <h2 className="section-title leading-[1.05]">
               앞으로 풀고
               <br />
               싶은 문제
