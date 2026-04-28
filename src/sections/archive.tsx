@@ -29,11 +29,17 @@ const TIMELINE = [
   },
 ] as const
 
+import bookWritingBusiness from "@/assets/projects/book-writing-business.jpg"
+import exhibitionNa2024 from "@/assets/projects/exhibition-na-2024.png"
+import improvShow from "@/assets/projects/improv-show.jpg"
+
 type Project = {
   title: string
   meta?: string
   description: string
   href?: string
+  image?: string
+  imageObjectPosition?: string
 }
 
 const CREATIVE_PROJECTS: Project[] = [
@@ -42,12 +48,18 @@ const CREATIVE_PROJECTS: Project[] = [
     meta: "2021",
     description:
       "공저자로 참여하여 글쓰기와 사업 실행에 대한 관점을 함께 정리했습니다.",
+    href: "https://product.kyobobook.co.kr/detail/S000001945002",
+    image: bookWritingBusiness,
+    imageObjectPosition: "center top",
   },
   {
     title: "공동 미술 전시 2회",
     meta: "2021 · 2024",
     description:
-      "창작과 표현을 실제 결과물로 내보내는 경험을 쌓았습니다.",
+      "두 차례의 공동 전시 중 2024년 NA Project 전시 자료입니다.",
+    image: exhibitionNa2024,
+    href: "https://youtu.be/CU5pWyEt8Ww?si=D38Apc_y0wja9mUi",
+    imageObjectPosition: "center bottom",
   },
   {
     title: "임프라브 공연",
@@ -55,6 +67,7 @@ const CREATIVE_PROJECTS: Project[] = [
     description:
       "즉흥극 무대에서 사람과 상황을 빠르게 읽고 표현으로 잇는 감각을 익혔습니다.",
     href: "https://youtu.be/LbtRAgU8n2A?si=ADFypqNl4NLHIS9g",
+    image: improvShow,
   },
 ]
 
@@ -142,8 +155,23 @@ function ProjectCard({ project }: { project: Project }) {
 
   const inner = (
     <>
-      <div className="flex aspect-[4/3] items-center justify-center bg-muted">
-        <span className="text-sm text-muted-foreground">이미지 추가 예정</span>
+      <div className="flex aspect-[4/3] items-center justify-center overflow-hidden bg-muted">
+        {project.image ? (
+          <img
+            src={project.image}
+            alt=""
+            className="h-full w-full object-cover"
+            style={
+              project.imageObjectPosition
+                ? { objectPosition: project.imageObjectPosition }
+                : undefined
+            }
+            loading="lazy"
+            draggable={false}
+          />
+        ) : (
+          <span className="text-sm text-muted-foreground">이미지 추가 예정</span>
+        )}
       </div>
       <div className="space-y-3 p-5 md:space-y-4 md:p-6">
         {project.meta && (
