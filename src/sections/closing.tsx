@@ -1,3 +1,4 @@
+import watercolor from "@/assets/closing/watercolor.webp"
 import { EMAIL } from "@/lib/contact"
 
 export function ClosingSection() {
@@ -9,7 +10,7 @@ export function ClosingSection() {
             <div className="overflow-hidden rounded-[2rem] border border-black/6">
               <div className="relative aspect-[4/5] overflow-hidden">
                 <img
-                  src="https://picsum.photos/seed/mj-closing/720/900"
+                  src={watercolor}
                   alt=""
                   className="h-full w-full object-cover"
                   draggable={false}
