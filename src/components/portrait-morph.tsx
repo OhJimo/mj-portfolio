@@ -25,6 +25,10 @@ type PortraitMorphContextValue = {
 const PortraitMorphContext = createContext<PortraitMorphContextValue | null>(null)
 
 const INTRO_IMAGE = "https://picsum.photos/seed/mj-portrait/600/750"
+
+export const MORPH_PERSPECTIVE = 1400
+export const ABOUT_LANDING_ROTATE_Y = -18
+export const ABOUT_LANDING_ROTATE_Z = 2
 const DESKTOP_QUERY = "(min-width: 768px)"
 
 function usePortraitMorphContext() {
@@ -185,13 +189,20 @@ export function MorphingPortrait() {
   const { scrollY } = useScroll()
 
   const scrollEnd = bounds?.scrollEnd ?? 1
-  const x = useTransform(scrollY, [0, scrollEnd], [bounds?.sx ?? 0, bounds?.ex ?? 0])
-  const y = useTransform(scrollY, [0, scrollEnd], [bounds?.sy ?? 0, bounds?.ey ?? 0])
-  const rotateY = useTransform(
+  const x = useTransform(scrollY, [0, scrollEnd], [bounds?.sx ?? 0, bounds?.ex ?? 0], { clamp: true })
+  const y = useTransform(scrollY, [0, scrollEnd], [bounds?.sy ?? 0, bounds?.ey ?? 0], { clamp: true })
+  const spinY = useTransform(
     scrollY,
-    [0, scrollEnd * 0.25, scrollEnd * 0.5, scrollEnd * 0.75, scrollEnd],
-    [0, 45, 90, 135, 180],
+    [0, scrollEnd * 0.25, scrollEnd * 0.5, scrollEnd * 0.75, scrollEnd * 0.9, scrollEnd * 0.96],
+    [0, 45, 90, 135, 180, 180],
+    { clamp: true },
   )
+  const landingY = useTransform(scrollY, [0, scrollEnd * 0.8, scrollEnd * 0.94], [0, 0, -18], {
+    clamp: true,
+  })
+  const rotateZ = useTransform(scrollY, [0, scrollEnd * 0.8, scrollEnd * 0.94], [0, 0, 2], {
+    clamp: true,
+  })
 
   if (!enabled || !bounds) {
     return null
@@ -206,31 +217,35 @@ export function MorphingPortrait() {
         y,
         width: bounds.sw,
         height: bounds.sh,
-        perspective: 1400,
+        perspective: MORPH_PERSPECTIVE,
         willChange: "transform",
       }}
     >
-      <motion.div
-        className="relative h-full w-full overflow-hidden rounded-2xl"
-        style={{
-          rotateY,
-          transformStyle: "preserve-3d",
-          willChange: "transform",
-        }}
-      >
-        <div className="absolute inset-0" style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
-          <img src={INTRO_IMAGE} alt="" className="h-full w-full object-cover" />
-        </div>
-        <div
-          className="absolute inset-0"
-          style={{
-            transform: "rotateY(180deg)",
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-          }}
-        >
-          <img src={INTRO_IMAGE} alt="" className="h-full w-full object-cover" />
-        </div>
+      <motion.div className="relative h-full w-full" style={{ rotateZ, willChange: "transform" }}>
+        <motion.div className="relative h-full w-full" style={{ rotateY: landingY, transformStyle: "preserve-3d", willChange: "transform" }}>
+          <motion.div
+            className="relative h-full w-full overflow-hidden rounded-2xl"
+            style={{
+              rotateY: spinY,
+              transformStyle: "preserve-3d",
+              willChange: "transform",
+            }}
+          >
+            <div className="absolute inset-0" style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
+              <img src={INTRO_IMAGE} alt="" className="h-full w-full object-cover" />
+            </div>
+            <div
+              className="absolute inset-0"
+              style={{
+                transform: "rotateY(180deg)",
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+              }}
+            >
+              <img src={INTRO_IMAGE} alt="" className="h-full w-full object-cover" />
+            </div>
+          </motion.div>
+        </motion.div>
       </motion.div>
     </motion.div>
   )

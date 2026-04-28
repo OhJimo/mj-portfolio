@@ -1,4 +1,4 @@
-import { useAboutPortraitAnchor } from "@/components/portrait-morph"
+import { ABOUT_LANDING_ROTATE_Y, ABOUT_LANDING_ROTATE_Z, MORPH_PERSPECTIVE, useAboutPortraitAnchor } from "@/components/portrait-morph"
 
 export function AboutSection() {
   const { anchorRef } = useAboutPortraitAnchor()
@@ -26,7 +26,7 @@ export function AboutSection() {
               ref={anchorRef}
               className="mx-auto block aspect-[4/5] w-[clamp(220px,24vw,340px)] overflow-hidden rounded-[2rem] bg-muted md:-mt-6 md:mx-0 lg:-mt-10"
               style={{
-                transform: "perspective(1400px) rotate(2deg) rotateY(-18deg)",
+                transform: `perspective(${MORPH_PERSPECTIVE}px) rotate(${ABOUT_LANDING_ROTATE_Z}deg) rotateY(${ABOUT_LANDING_ROTATE_Y}deg)`,
                 transformOrigin: "center center",
               }}
             >
