@@ -3,9 +3,7 @@ export function AboutSection() {
     <section id="about" className="section section-divider">
       <div className="container-portfolio">
         <div className="space-y-12 md:space-y-16">
-          <p className="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-none tracking-tight">
-            소개
-          </p>
+          <p className="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-none tracking-tight">소개</p>
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-12 lg:gap-16">
             <div className="space-y-6 md:space-y-8">
               <h2 className="text-[clamp(1.5rem,2.5vw,2rem)] font-bold leading-[1.35]">

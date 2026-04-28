@@ -1,5 +1,6 @@
 import { ReactLenis } from "lenis/react"
 
+import { Footer } from "@/components/footer"
 import { Header } from "@/components/header"
 import { PageGuides } from "@/components/page-guides"
 import { AboutSection } from "@/sections/about"
@@ -32,7 +33,7 @@ export function App() {
         <ClosingSection />
       </main>
 
-      {/* TODO: Footer */}
+      <Footer />
     </ReactLenis>
   )
 }

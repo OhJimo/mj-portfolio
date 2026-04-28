@@ -1,7 +1,10 @@
 export function IntroSection() {
   return (
-    <section id="intro" className="section pt-12 md:pt-16 lg:pt-20">
-      <div className="container-portfolio">
+    <section
+      id="intro"
+      className="section flex min-h-[85vh] items-center pt-20 pb-16 md:min-h-[88vh] md:pt-24 md:pb-20 lg:min-h-[90vh]"
+    >
+      <div className="container-portfolio w-full">
         <h1 className="grid grid-cols-1 items-center gap-6 md:grid-cols-[auto_auto_auto] md:justify-center md:gap-4">
           <span className="text-center text-[clamp(1.5rem,4.5vw,3.75rem)] leading-[0.95] tracking-tight whitespace-nowrap md:text-right">
             다양한 직군
