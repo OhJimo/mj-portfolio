@@ -1,4 +1,8 @@
+import { useAboutPortraitAnchor } from "@/components/portrait-morph"
+
 export function AboutSection() {
+  const { anchorRef } = useAboutPortraitAnchor()
+
   return (
     <section id="about" className="section section-divider">
       <div className="container-portfolio">
@@ -19,6 +23,7 @@ export function AboutSection() {
               </div>
             </div>
             <div
+              ref={anchorRef}
               className="mx-auto block aspect-[4/5] w-[clamp(220px,24vw,340px)] overflow-hidden rounded-[2rem] bg-muted md:-mt-6 md:mx-0 lg:-mt-10"
               style={{
                 transform: "perspective(1400px) rotate(2deg) rotateY(-18deg)",
