@@ -8,8 +8,9 @@ import {
   type ReactNode,
   type RefObject,
 } from "react"
-import { useReducedMotion } from "framer-motion"
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion"
 
+import profileAbout from "@/assets/profile/profile-2.webp"
 import profileIntro from "@/assets/profile/profile-3.webp"
 
 type MorphCoords = {
@@ -19,6 +20,8 @@ type MorphCoords = {
   ey: number
   w: number
   h: number
+  introDocY: number
+  aboutDocY: number
 }
 
 type MorphValue = {
@@ -86,6 +89,8 @@ export function MorphingPortrait() {
         ey: a.top - m.top,
         w: i.width,
         h: i.height,
+        introDocY: i.top + window.scrollY,
+        aboutDocY: a.top + window.scrollY,
       })
     }
     calc()
@@ -93,28 +98,70 @@ export function MorphingPortrait() {
     return () => window.removeEventListener("resize", calc)
   }, [isActive, introRef, aboutRef, mainRef])
 
+  const { scrollY } = useScroll()
+
+  const progress = useTransform(() => {
+    if (!coords) return 0
+    const vh = window.innerHeight
+    const start = Math.max(0, coords.introDocY + coords.h / 2 - vh / 2)
+    const end = coords.aboutDocY + coords.h / 2 - vh / 2
+    const span = end - start
+    if (span <= 0) return 0
+    const s = scrollY.get()
+    return Math.max(0, Math.min(1, (s - start) / span))
+  })
+
+  const rotateY = useTransform(progress, [0, 1], [0, 180])
+  const x = useTransform(progress, [0, 1], [coords?.sx ?? 0, coords?.ex ?? 0])
+  const y = useTransform(progress, [0, 1], [coords?.sy ?? 0, coords?.ey ?? 0])
+
   if (!isActive || !coords) return null
 
-  const debugOutline = import.meta.env.DEV ? "1px solid red" : undefined
-
   return (
-    <div
+    <motion.div
       aria-hidden
-      className="pointer-events-none absolute z-30 overflow-hidden rounded-2xl bg-muted"
+      className="pointer-events-none absolute left-0 top-0 z-30"
       style={{
-        left: coords.sx,
-        top: coords.sy,
         width: coords.w,
         height: coords.h,
-        outline: debugOutline,
+        x,
+        y,
       }}
     >
-      <img
-        src={profileIntro}
-        alt=""
-        className="block h-full w-full object-cover"
-        style={{ objectPosition: "center 8%" }}
-      />
-    </div>
+      <motion.div
+        className="size-full"
+        style={{
+          rotateY,
+          transformPerspective: 1200,
+          transformStyle: "preserve-3d",
+          transformOrigin: "center",
+        }}
+      >
+        <div
+          className="absolute inset-0 overflow-hidden rounded-2xl bg-muted"
+          style={{ backfaceVisibility: "hidden" }}
+        >
+          <img
+            src={profileIntro}
+            alt=""
+            className="block h-full w-full object-cover"
+            style={{ objectPosition: "center 8%" }}
+          />
+        </div>
+        <div
+          className="absolute inset-0 overflow-hidden rounded-[2rem] bg-muted"
+          style={{
+            backfaceVisibility: "hidden",
+            transform: "rotateY(180deg)",
+          }}
+        >
+          <img
+            src={profileAbout}
+            alt=""
+            className="block h-full w-full object-cover"
+          />
+        </div>
+      </motion.div>
+    </motion.div>
   )
 }
