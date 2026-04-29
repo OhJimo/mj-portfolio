@@ -1,10 +1,12 @@
 import profileIntro from "@/assets/profile/profile-3.webp"
+import { useMorphIntroRef } from "@/components/morphing-portrait"
 
 const CARD_WIDTH = "clamp(220px,24vw,340px)"
 const CARD_HEIGHT = "clamp(275px,30vw,425px)"
 const SIDE_SUB_COPY_GAP = "0.85rem"
 
 export function IntroSection() {
+  const introRef = useMorphIntroRef()
   return (
     <section
       id="intro"
@@ -56,6 +58,7 @@ export function IntroSection() {
           </div>
 
           <span
+            ref={introRef as React.Ref<HTMLSpanElement>}
             aria-hidden
             className="mx-auto block aspect-[4/5] overflow-hidden rounded-2xl bg-muted"
             style={{ width: CARD_WIDTH }}

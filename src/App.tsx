@@ -2,6 +2,11 @@ import { ReactLenis } from "lenis/react"
 
 import { Footer } from "@/components/footer"
 import { Header } from "@/components/header"
+import {
+  MorphingPortrait,
+  MorphProvider,
+  useMorphMainRef,
+} from "@/components/morphing-portrait"
 import { PageGuides } from "@/components/page-guides"
 import { AboutSection } from "@/sections/about"
 import { ArchiveSection } from "@/sections/archive"
@@ -11,13 +16,14 @@ import { ExperienceSection } from "@/sections/experience"
 import { IntroSection } from "@/sections/intro"
 import { PracticeSection } from "@/sections/practice"
 
-export function App() {
+function AppShell() {
+  const mainRef = useMorphMainRef()
   return (
-    <ReactLenis root>
+    <>
       <PageGuides />
       <Header />
 
-      <main className="relative">
+      <main ref={mainRef} className="relative">
         <IntroSection />
 
         <AboutSection />
@@ -31,9 +37,21 @@ export function App() {
         <DirectionSection />
 
         <ClosingSection />
+
+        <MorphingPortrait />
       </main>
 
       <Footer />
+    </>
+  )
+}
+
+export function App() {
+  return (
+    <ReactLenis root>
+      <MorphProvider>
+        <AppShell />
+      </MorphProvider>
     </ReactLenis>
   )
 }

@@ -1,6 +1,8 @@
 import profileAbout from "@/assets/profile/profile-2.webp"
+import { useMorphAboutRef } from "@/components/morphing-portrait"
 
 export function AboutSection() {
+  const aboutRef = useMorphAboutRef()
   return (
     <section id="about" className="section section-divider">
       <div className="container-portfolio">
@@ -21,6 +23,7 @@ export function AboutSection() {
               </div>
             </div>
             <div
+              ref={aboutRef as React.Ref<HTMLDivElement>}
               className="mx-auto block aspect-[4/5] w-[clamp(220px,24vw,340px)] overflow-hidden rounded-[2rem] bg-muted md:-mt-6 md:mx-0 lg:-mt-10"
               style={{
                 transform: "perspective(900px) rotate(2deg) rotateY(-18deg)",
