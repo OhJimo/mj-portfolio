@@ -1,8 +1,10 @@
 import profileAbout from "@/assets/profile/profile-2.webp"
-import { useMorphAboutRef } from "@/components/morphing-portrait"
+import { useIsMorphActive, useMorphAboutRef } from "@/components/morphing-portrait"
+import { cn } from "@/lib/utils"
 
 export function AboutSection() {
   const aboutRef = useMorphAboutRef()
+  const isMorphActive = useIsMorphActive()
   return (
     <section id="about" className="section section-divider">
       <div className="container-portfolio">
@@ -24,7 +26,10 @@ export function AboutSection() {
             </div>
             <div
               ref={aboutRef as React.Ref<HTMLDivElement>}
-              className="mx-auto block aspect-[4/5] w-[clamp(220px,24vw,340px)] overflow-hidden rounded-[2rem] bg-muted md:-mt-6 md:mx-0 lg:-mt-10"
+              className={cn(
+                "mx-auto block aspect-[4/5] w-[clamp(220px,24vw,340px)] overflow-hidden rounded-[2rem] bg-muted md:-mt-6 md:mx-0 lg:-mt-10",
+                isMorphActive && "opacity-0",
+              )}
               style={{
                 transform: "perspective(900px) rotate(2deg) rotateY(-18deg)",
                 transformOrigin: "center center",

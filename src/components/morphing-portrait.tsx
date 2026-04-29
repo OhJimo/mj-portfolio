@@ -69,6 +69,7 @@ export function MorphProvider({ children }: { children: ReactNode }) {
 export const useMorphIntroRef = () => useMorphContext().introRef
 export const useMorphAboutRef = () => useMorphContext().aboutRef
 export const useMorphMainRef = () => useMorphContext().mainRef
+export const useIsMorphActive = () => useMorphContext().isActive
 /* eslint-enable react-refresh/only-export-components */
 
 export function MorphingPortrait() {
