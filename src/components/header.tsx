@@ -35,7 +35,7 @@ export function Header() {
           isMenuOpen ? "pointer-events-auto" : "pointer-events-none",
         )}
       />
-      <header className="pointer-events-none fixed inset-x-0 top-2 z-50 flex justify-center px-3 pt-2 md:top-4 md:px-4 md:pt-4">
+      <header className="pointer-events-none fixed inset-x-0 top-1 z-50 flex justify-center px-3 pt-1.5 md:top-2.5 md:px-4 md:pt-3">
       <nav
         aria-label="주요 메뉴"
         className={cn(

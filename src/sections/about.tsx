@@ -10,9 +10,9 @@ export function AboutSection() {
       <div className="container-portfolio">
         <div className="space-y-6 md:space-y-16">
           <h2 className="section-title">소개</h2>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_auto] md:items-start md:gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-16">
             <div className="space-y-4 md:space-y-8">
-              <h2 className="text-[clamp(1.1rem,6vw,2rem)] font-bold leading-[1.32] tracking-[-0.02em]">
+              <h2 className="text-[clamp(1.1rem,4vw,1.5rem)] font-bold leading-[1.32] tracking-[-0.02em] lg:text-[clamp(1.5rem,3vw,2rem)]">
                 여러 현장과 창작 경험을 바탕으로, 정해진 카테고리로는 설명되지 않는 일의 방향을 만들어가고 있습니다.
               </h2>
               <div className="reading space-y-4 text-[0.98rem] md:space-y-6 md:text-[1.0625rem]">
@@ -27,11 +27,13 @@ export function AboutSection() {
             <div
               ref={aboutRef as React.Ref<HTMLDivElement>}
               className={cn(
-                "mx-auto block aspect-[4/5] w-[clamp(220px,24vw,340px)] overflow-hidden rounded-[2rem] bg-muted md:-mt-6 md:mx-0 lg:-mt-10",
+                "mx-auto block aspect-[4/5] w-[clamp(180px,24vw,340px)] overflow-hidden rounded-[2rem] bg-muted lg:-mt-10 lg:mx-0",
                 isMorphActive && "opacity-0",
               )}
               style={{
-                transform: "perspective(900px) rotate(2deg) rotateY(-18deg)",
+                transform: isMorphActive
+                  ? undefined
+                  : "perspective(900px) rotate(2deg) rotateY(-18deg)",
                 transformOrigin: "center center",
               }}
             >
