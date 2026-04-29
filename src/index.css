@@ -109,11 +109,11 @@
     --sidebar-ring: oklch(0.737 0.021 106.9);
 
     --container-max: 1080px;
-    --container-px: 1.5rem;
+    --container-px: 1rem;
     --guide-x: max(var(--container-px), calc((100vw - var(--container-max)) / 2));
     --reading-max: 40rem;
 
-    --section-py: 4rem;
+    --section-py: 2.5rem;
 
     --type-display: 3.5rem;
     --type-h1: 2.5rem;
@@ -278,7 +278,7 @@
         padding-block: var(--section-py);
     }
     .section-title {
-        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-size: clamp(1.85rem, 7.2vw, 3.3rem);
         font-weight: 700;
         line-height: 1;
         letter-spacing: -0.025em;

@@ -1,0 +1,6 @@
+docs/
+.playwright-mcp/
+*.png
+about-overlay-*
+about-section-now.png
+about-placeholder-only.png

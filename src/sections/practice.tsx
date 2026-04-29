@@ -18,23 +18,19 @@ const PRACTICE_IMAGES = [
   },
 ] as const
 
-const TRACK_IMAGES = [
-  PRACTICE_IMAGES[PRACTICE_IMAGES.length - 1],
-  ...PRACTICE_IMAGES,
-  PRACTICE_IMAGES[0],
-] as const
-
-const TRACK_STEP = 100 / TRACK_IMAGES.length
-
 const AUTOPLAY_INTERVAL_MS = 5000
+const SLIDE_TRANSITION = "transform 420ms cubic-bezier(0.22, 1, 0.36, 1)"
+
+type PracticeImage = (typeof PRACTICE_IMAGES)[number]
 
 export function PracticeSection() {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [displayIndex, setDisplayIndex] = useState(1)
-  const [transitionEnabled, setTransitionEnabled] = useState(true)
+  const [previousIndex, setPreviousIndex] = useState<number | null>(null)
+  const [direction, setDirection] = useState<1 | -1>(1)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [transitionReady, setTransitionReady] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
-  const pendingStepRef = useRef<-1 | 0 | 1>(0)
+  const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
     PRACTICE_IMAGES.forEach((image) => {
@@ -44,107 +40,83 @@ export function PracticeSection() {
   }, [])
 
   useEffect(() => {
-    if (isPaused) return
+    if (isPaused || isAnimating) return
 
     const intervalId = window.setInterval(() => {
-      setIsAnimating(true)
-      setTransitionEnabled(true)
-      setDisplayIndex((prev) => prev + 1)
-      setActiveIndex((prev) => (prev + 1) % PRACTICE_IMAGES.length)
+      moveTo((activeIndex + 1) % PRACTICE_IMAGES.length, 1)
     }, AUTOPLAY_INTERVAL_MS)
 
     return () => {
       window.clearInterval(intervalId)
     }
-  }, [isPaused])
+  }, [activeIndex, isAnimating, isPaused])
 
-  const flushPending = () => {
-    const pendingStep = pendingStepRef.current
-    if (pendingStep === 0) return
-
-    pendingStepRef.current = 0
-
-    if (pendingStep === 1) {
-      moveBy(1)
-      return
+  useEffect(() => {
+    return () => {
+      if (rafRef.current !== null) {
+        window.cancelAnimationFrame(rafRef.current)
+      }
     }
+  }, [])
 
-    moveBy(-1)
-  }
+  const moveTo = (nextIndex: number, nextDirection: 1 | -1) => {
+    if (nextIndex === activeIndex || isAnimating) return
 
-  const unlockAfterLoopJump = () => {
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        setTransitionEnabled(true)
-        setIsAnimating(false)
-        flushPending()
+    setPreviousIndex(activeIndex)
+    setActiveIndex(nextIndex)
+    setDirection(nextDirection)
+    setTransitionReady(false)
+    setIsAnimating(true)
+
+    rafRef.current = window.requestAnimationFrame(() => {
+      rafRef.current = window.requestAnimationFrame(() => {
+        setTransitionReady(true)
       })
     })
   }
 
-  const moveBy = (step: 1 | -1) => {
-    setIsAnimating(true)
-    setTransitionEnabled(true)
-    setDisplayIndex((prev) => prev + step)
-    setActiveIndex((prev) =>
-      (prev + step + PRACTICE_IMAGES.length) % PRACTICE_IMAGES.length,
-    )
-  }
-
   const handlePrev = () => {
-    if (isAnimating) {
-      pendingStepRef.current = -1
-      return
-    }
-
-    moveBy(-1)
+    moveTo((activeIndex - 1 + PRACTICE_IMAGES.length) % PRACTICE_IMAGES.length, -1)
   }
 
   const handleNext = () => {
-    if (isAnimating) {
-      pendingStepRef.current = 1
-      return
-    }
-
-    moveBy(1)
+    moveTo((activeIndex + 1) % PRACTICE_IMAGES.length, 1)
   }
 
   const handleDotClick = (index: number) => {
-    if (index === activeIndex) return
-    if (isAnimating) return
+    if (index === activeIndex || isAnimating) return
 
-    setIsAnimating(true)
-    setTransitionEnabled(true)
-    setActiveIndex(index)
-    setDisplayIndex(index + 1)
+    moveTo(index, index > activeIndex ? 1 : -1)
   }
 
   const handleTransitionEnd = () => {
-    if (displayIndex === 0) {
-      setTransitionEnabled(false)
-      setDisplayIndex(PRACTICE_IMAGES.length)
-      unlockAfterLoopJump()
-      return
-    }
-
-    if (displayIndex === PRACTICE_IMAGES.length + 1) {
-      setTransitionEnabled(false)
-      setDisplayIndex(1)
-      unlockAfterLoopJump()
-      return
-    }
+    if (!isAnimating) return
 
     setIsAnimating(false)
-    flushPending()
+    setPreviousIndex(null)
+    setTransitionReady(false)
   }
+
+  const getImageStyle = (image: PracticeImage) => {
+    if (!("objectPosition" in image) && !("scale" in image)) return undefined
+
+    return {
+      objectPosition: "objectPosition" in image ? image.objectPosition : undefined,
+      transform: "scale" in image ? `scale(${image.scale})` : undefined,
+      transformOrigin: "scale" in image ? "top left" : undefined,
+    }
+  }
+
+  const activeImage = PRACTICE_IMAGES[activeIndex]
+  const previousImage = previousIndex === null ? null : PRACTICE_IMAGES[previousIndex]
+  const incomingStartX = direction === 1 ? "100%" : "-100%"
+  const outgoingEndX = direction === 1 ? "-100%" : "100%"
 
   return (
     <section id="practice" className="section section-divider">
       <div className="container-portfolio">
         <div className="space-y-12 md:space-y-16">
-          <h2 className="section-title">
-            지금 쌓고 있는 기반
-          </h2>
+          <h2 className="section-title">지금 쌓고 있는 기반</h2>
 
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(280px,0.78fr)_minmax(0,1fr)] md:items-start md:gap-12 lg:gap-16">
             <div className="order-2 md:order-1">
@@ -160,53 +132,57 @@ export function PracticeSection() {
                 }}
               >
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[1.95rem] bg-muted">
+                  {previousImage ? (
+                    <div
+                      className="absolute inset-0 z-10 will-change-transform"
+                      style={{
+                        transform: transitionReady
+                          ? `translate3d(${outgoingEndX}, 0, 0)`
+                          : "translate3d(0, 0, 0)",
+                        transition: SLIDE_TRANSITION,
+                      }}
+                    >
+                      <img
+                        src={previousImage.src}
+                        alt=""
+                        className="h-full w-full object-cover"
+                        style={getImageStyle(previousImage)}
+                        loading="eager"
+                        draggable={false}
+                      />
+                    </div>
+                  ) : null}
+
                   <div
-                    className="flex h-full will-change-transform"
-                    onTransitionEnd={handleTransitionEnd}
+                    className="absolute inset-0 z-20 will-change-transform"
                     style={{
-                      width: `${TRACK_IMAGES.length * 100}%`,
-                      transform: `translate3d(-${displayIndex * TRACK_STEP}%, 0, 0)`,
-                      transition: transitionEnabled
-                        ? "transform 360ms cubic-bezier(0.22, 1, 0.36, 1)"
-                        : "none",
+                      transform:
+                        previousImage === null
+                          ? "translate3d(0, 0, 0)"
+                          : transitionReady
+                            ? "translate3d(0, 0, 0)"
+                            : `translate3d(${incomingStartX}, 0, 0)`,
+                      transition: previousImage ? SLIDE_TRANSITION : "none",
                     }}
+                    onTransitionEnd={handleTransitionEnd}
                   >
-                    {TRACK_IMAGES.map((image, index) => (
-                      <div
-                        key={`${image.src}-${index}`}
-                        className="h-full shrink-0 overflow-hidden"
-                        style={{ width: `${TRACK_STEP}%` }}
-                      >
-                        <img
-                          src={image.src}
-                          alt=""
-                          className="h-full w-full object-cover"
-                          style={
-                            "objectPosition" in image || "scale" in image
-                              ? {
-                                  objectPosition:
-                                    "objectPosition" in image ? image.objectPosition : undefined,
-                                  transform:
-                                    "scale" in image ? `scale(${image.scale})` : undefined,
-                                  transformOrigin:
-                                    "scale" in image ? "top left" : undefined,
-                                }
-                              : undefined
-                          }
-                          loading="eager"
-                          draggable={false}
-                        />
-                      </div>
-                    ))}
+                    <img
+                      src={activeImage.src}
+                      alt=""
+                      className="h-full w-full object-cover"
+                      style={getImageStyle(activeImage)}
+                      loading="eager"
+                      draggable={false}
+                    />
                   </div>
 
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/22 via-black/6 to-transparent" />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-28 bg-gradient-to-t from-black/22 via-black/6 to-transparent" />
 
                   <button
                     type="button"
                     onClick={handlePrev}
                     aria-label="이전 이미지"
-                    className="absolute left-4 top-1/2 flex size-10 -translate-y-1/2 cursor-pointer appearance-none items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95"
+                    className="absolute left-4 top-1/2 z-40 flex size-10 -translate-y-1/2 cursor-pointer appearance-none items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95"
                   >
                     ←
                   </button>
@@ -214,12 +190,12 @@ export function PracticeSection() {
                     type="button"
                     onClick={handleNext}
                     aria-label="다음 이미지"
-                    className="absolute right-4 top-1/2 flex size-10 -translate-y-1/2 cursor-pointer appearance-none items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95"
+                    className="absolute right-4 top-1/2 z-40 flex size-10 -translate-y-1/2 cursor-pointer appearance-none items-center justify-center rounded-full border border-white/35 bg-background/82 text-lg text-foreground transition-[transform,background-color] duration-200 hover:bg-background active:scale-95"
                   >
                     →
                   </button>
 
-                  <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-2.5">
+                  <div className="absolute bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2.5">
                     {PRACTICE_IMAGES.map((image, index) => (
                       <button
                         key={image.src}
@@ -231,9 +207,7 @@ export function PracticeSection() {
                       >
                         <span
                           className={`block rounded-full transition-all duration-200 ${
-                            activeIndex === index
-                              ? "h-2.5 w-7 bg-white"
-                              : "size-2.5 bg-white/55"
+                            activeIndex === index ? "h-2.5 w-7 bg-white" : "size-2.5 bg-white/55"
                           }`}
                         />
                       </button>

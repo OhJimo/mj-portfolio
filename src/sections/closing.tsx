@@ -5,9 +5,9 @@ export function ClosingSection() {
   return (
     <section id="closing" className="section section-divider">
       <div className="container-portfolio">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(260px,0.78fr)_minmax(0,1fr)] md:items-center md:gap-12 lg:gap-16">
-          <div className="order-2 md:order-1">
-            <div className="overflow-hidden rounded-[2rem] border border-black/6">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(260px,0.78fr)_minmax(0,1fr)] md:gap-12 lg:gap-16">
+          <div className="order-2 md:order-1 md:flex md:flex-col md:justify-end md:gap-6">
+            <div className="overflow-hidden rounded-[2rem] border border-black/6 md:mx-auto md:max-w-[88%]">
               <div className="relative aspect-[4/5] overflow-hidden">
                 <img
                   src={watercolor}
@@ -18,16 +18,21 @@ export function ClosingSection() {
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/18 via-black/5 to-transparent" />
               </div>
             </div>
+            <p className="mt-3 text-center text-sm font-medium tracking-wide text-muted-foreground md:mt-0 md:mb-[3px]">
+              트램 풍경 · 2024 · Watercolor on paper · 장명진
+            </p>
           </div>
 
-          <div className="order-1 md:order-2">
-            <div className="reading max-w-none space-y-6 md:space-y-7">
+          <div className="order-1 md:order-2 md:flex md:flex-col md:justify-between">
+            <div className="reading max-w-none">
               <div className="space-y-5 text-[clamp(1.3rem,2.1vw,1.75rem)] font-medium leading-[1.55] tracking-tight text-foreground/95 md:space-y-6">
                 <p>여러 현장과 창작 경험을 바탕으로, 사용자 맥락을 이해하는 감각을 길러왔습니다.</p>
                 <p>복잡한 문제를 실행 가능한 해결책으로 정리하는 힘도 함께 쌓아왔습니다.</p>
                 <p>이 감각을 바탕으로 실제 문제를 다루는 팀에 기여하고 싶습니다.</p>
               </div>
+            </div>
 
+            <div className="reading mt-6 max-w-none space-y-6 md:mt-0 md:space-y-7">
               <p className="text-muted-foreground">
                 포지션 제안이나 채용 관련 이야기가 있다면 이메일로 연락 주시면 좋겠습니다.
               </p>
