@@ -42,6 +42,7 @@ type Project = {
   description: string
   href?: string
   image?: string
+  imageClassName?: string
   imageObjectPosition?: string
   imageVariant?: "cover" | "logo"
 }
@@ -72,18 +73,11 @@ const CREATIVE_PROJECTS: Project[] = [
       "즉흥극 무대에서 사람과 상황을 빠르게 읽고 표현으로 잇는 감각을 익혔습니다.",
     href: "https://youtu.be/LbtRAgU8n2A?si=ADFypqNl4NLHIS9g",
     image: improvShow,
+    imageClassName: "rotate-180",
   },
 ]
 
 const WEB_PROJECTS: Project[] = [
-  {
-    title: "GAME RANK",
-    description:
-      "여러 게임 순위를 한곳에서 모아볼 수 있도록 만든 웹 프로젝트.",
-    href: "https://oz-gamerank.vercel.app/",
-    image: gameRank,
-    imageVariant: "logo",
-  },
   {
     title: "LandingLin",
     description:
@@ -98,6 +92,14 @@ const WEB_PROJECTS: Project[] = [
       "크롬 웹스토어에 배포한 확장 프로그램.",
     href: "https://chromewebstore.google.com/detail/fb-%EA%B4%91%EA%B3%A0-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EB%8F%84%EC%9A%B0%EB%AF%B8/gjfjmdnbcambfkhldbjeojdahnfehkdl",
     image: fbAdHelper,
+    imageVariant: "logo",
+  },
+  {
+    title: "GAME RANK",
+    description:
+      "여러 게임 순위를 한곳에서 모아볼 수 있도록 만든 웹 프로젝트.",
+    href: "https://oz-gamerank.vercel.app/",
+    image: gameRank,
     imageVariant: "logo",
   },
 ]
@@ -178,7 +180,7 @@ function ProjectCard({ project }: { project: Project }) {
             <img
               src={project.image}
               alt=""
-              className="max-h-[78%] max-w-[78%] object-contain"
+              className={`max-h-[78%] max-w-[78%] object-contain ${project.imageClassName ?? ""}`}
               loading="lazy"
               draggable={false}
             />
@@ -186,7 +188,7 @@ function ProjectCard({ project }: { project: Project }) {
             <img
               src={project.image}
               alt=""
-              className="h-full w-full object-cover"
+              className={`h-full w-full object-cover ${project.imageClassName ?? ""}`}
               style={
                 project.imageObjectPosition
                   ? { objectPosition: project.imageObjectPosition }

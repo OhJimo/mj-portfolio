@@ -12,14 +12,16 @@ export function ClosingSection() {
                 <img
                   src={watercolor}
                   alt=""
-                  className="h-full w-full object-cover"
+                  className="h-full w-full origin-center rotate-90 scale-[1.26] object-cover"
                   draggable={false}
                 />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/18 via-black/5 to-transparent" />
               </div>
             </div>
-            <p className="mt-3 text-center text-sm font-medium tracking-wide text-muted-foreground md:mt-0 md:mb-[3px]">
-              트램 풍경 · 2024 · Watercolor on paper · 장명진
+            <p className="mt-3 text-center text-sm font-medium leading-[1.5] tracking-wide text-muted-foreground md:mt-0 md:mb-[3px]">
+              <span className="block md:inline">트램 풍경 · 2024</span>
+              <span className="hidden md:inline"> · </span>
+              <span className="block md:inline">Watercolor on paper · 장명진</span>
             </p>
           </div>
 
